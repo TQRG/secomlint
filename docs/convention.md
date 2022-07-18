@@ -2,13 +2,7 @@
 
 Sometimes commit messages generated to document the patches of known vulnerabilities are either poorly documented or do not seem to be security-related. 
 
-<img src="./assets/poorly_doc.png" width="600">
-<img src="./assets/unrelated_to_sec.png" width="600">
-
-Our research team confirmed that extracting security-related information from security commit messages may be difficult sometimes which shows the importance of best practices and templates to create better security commit messages. Therefore, a new convention for security commit messages was created, the SECOM convention.
-
-
-SECOM is a convention for making security commit messages more readable and structured. It organizes several bits of relevant information about the vulnerabilities and respective patches for security engineers, maintainers or users. The 
+SECOM is a convention for making security commit messages more readable and structured. It organizes several bits of security-relevant information from vulnerabilities and their respective patches for security engineers, maintainers or users. 
 
 ```markup
 1   vuln-fix: subject/header containing summary of changes in ~50 characters (Vuln-ID)
@@ -39,4 +33,11 @@ SECOM is a convention for making security commit messages more readable and stru
 26  Resolves: #123
 27  See also: #456, #789
 ```
+
+Our research team confirmed that extracting security-related information from security commit messages may be difficult sometimes which shows the importance of best practices and templates to create better security commit messages. Here are some of the examples the team found while looking at 
+the data:
+
+<img src="./assets/poorly_doc.png" width="600">
+<img src="./assets/unrelated_to_sec.png" width="600">
+
 

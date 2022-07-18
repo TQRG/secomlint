@@ -5,10 +5,9 @@
 
   - [Template](convention.md)
   - [Details](fields.md)
-  - [Configuration](config.md)
   - [Checklist](checklist.md)
+  - [Configuration](config.md)
 
 - **secomlint**
 
-  - [Configuration](secomlint-config.md)
   - [Rules](secomlint-rules.md)

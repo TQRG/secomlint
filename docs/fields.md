@@ -10,13 +10,16 @@ and from empirical research performed upon security commit messages.
 # (what) describe the vulnerability/problem
 # (why) describe its impact
 # (how) describe the patch/fix
+</body>
 
+[For Each Weakness in Weaknesses]
 Weakness: <Weakness Name or CWE-ID>
 Severity: <Low, Medium, High and Critical>
 CVSS: <Numerical representation (0-10) of severity>
 Detection: <Detection Method>
 Report: <Report Link>
 Introduced in: <Commit Hash>
+[End]
 
 Reported-by: <Name> (<Contact>)
 Signed-off-by: <Name> (<Contact>)
@@ -27,11 +30,7 @@ Resolves: <Issue/PR No.>
 See also: <Issue/PR No.>
 ```
 
-Rules:
-
 * Atomic changes: Commit each patch as a separate change [4].
-
-Fields:
 * A `<type>` should be assigned to each commit [1]. Our suggestion is the usage of `vuln-fix to specify the fix is related to a vulnerability.
 * `<header/subject>`: ~50 chars (max 72 chars); capitalized; no period in the end; imperative form.
 * `<Vuln-ID>`: When available; e.g., CVE, OSV, GHSA, and other formats.
