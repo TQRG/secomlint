@@ -9,18 +9,20 @@ def main():
     pass
 
 @main.command()
-@click.argument('message', required=False)
-def check(message):
+@click.argument('message', required=True)
+@click.option('--all', '-a', is_flag=True, help="Print the result of all rules.")
+def check(message, all):
     """Check if message follows SECOM compliance"""
     click.echo(f"💬 {message[0:150]}...\n----------------------------------------------")
     results = linter.secom(message)
-        
+
     for result in results:
         if result[1] == 1:
             click.echo(f"{result[2]} " + click.style(f"[\u001b]8;;https://tqrg.github.io/secomlint/#/secomlint-rules?id={result[0].replace('_', '-')}\u001b\\{result[0]}\u001b]8;;\u001b\\]", fg="blue"))
-    for result in results:
-        if result[1] == 0:
-            click.echo(result[2])
+    if all:
+        for result in results:
+            if result[1] == 0:
+                click.echo(result[2])
     pass
 
 if __name__ == '__main__':
