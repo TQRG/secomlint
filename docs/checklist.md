@@ -27,22 +27,22 @@ Before you submit your patch, you should check the following list to ensure your
 	<tr >
 	    <td rowspan="4">Body</td>
 	    <td>what</td>
-	    <td>Did you describe the vulnerability or problem?</td>
+	    <td>Describe the vulnerability or problem in the first sentence of the body.</td>
 	    <td>Mandatory</td>
 	</tr>
     <tr >
 	    <td>why</td>
-	    <td>Did you describe the impact of the vulnerability?</td>
+	    <td>Describe the impact of the vulnerability in the second sentence of the body.</td>
 	    <td>Mandatory</td>
 	</tr>
     <tr >
 	    <td>how</td>
-	    <td>Did you describe how the vulnerability was fixed?</td>
+	    <td>Describe how the vulnerability was fixed in the third sentence.</td>
 	    <td>Mandatory</td>
 	</tr>
 	<tr>
 	    <td>*</td>
-	    <td>Did you describe the what, why and how within ~75 chars?</td>
+	    <td>Did you describe the what, why and how within ~75 words (~25 words per section)?</td>
 	    <td>Optional</td>
 	</tr>
     <tr>
@@ -88,9 +88,15 @@ Before you submit your patch, you should check the following list to ensure your
 	    <td>Mandatory</td>
 	</tr>
     <tr>
-	    <td rowspan="1">Bug-Tracker</td>
-	    <td>Bug-Tracker/Resolves</td>
-	    <td>Include the link to the external bug-tracker or mentions for the issues and pull-requests.</td>
+	    <td rowspan="2">Bug-Tracker</td>
+	    <td>External Bug-Tracker</td>
+	    <td>Include the link to the issues or pull requests in the external bug-tracker.</td>
+	    <td>Optional</td>
+	</tr>
+	<tr>
+	    <td>GitHub</td>
+	    <td>Include the links for the issues and pull-requests related with the patch.
+ 		</td>
 	    <td>Optional</td>
 	</tr>
 </table>

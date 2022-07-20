@@ -12,7 +12,7 @@ Rules are made up by a name and a configuration array. The configuration array c
 * **value**: 50
 
 #### header-is-not-empty
-* **condition**: `header` has more than `value` characters
+* **condition**: `header` has more than 0 characters
 * **type**: 1 (error)
 * **value**: 0
 
@@ -28,4 +28,29 @@ Rules are made up by a name and a configuration array. The configuration array c
 * **condition**: `header` ends with `<vuln-id>` 
 * **type**: 0 (warning)
 * **value**: `(CVE|GHSA|OSV).*`
+
+#### body-is-not-empty
+
+* **condition**: `body` has more than 0 characters
+* **type**: 1 (error)
+* **value**: 0
+
+#### body-max-length
+
+* **condition**: `body` has `value` or less characters
+* **type**: 0 (warning)
+* **value**: 75
+
+#### body-section-is-not-empty
+
+* **condition**: `section` has more than 0 characters
+* **type**: 1 (error)
+* **value**: 25
+
+
+#### body-section-max-length
+
+* **condition**: `section` has `value` or less characters
+* **type**: 0 (warning)
+* **value**: 25
 
