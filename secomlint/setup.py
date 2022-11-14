@@ -11,7 +11,7 @@ setup(
     install_requires=['spacy'],
     entry_points={
         'console_scripts': [
-            'secomlint = secomlint.__main__:hello'
+            'secomlint = secomlint.__main__:main'
         ]
     },
 )

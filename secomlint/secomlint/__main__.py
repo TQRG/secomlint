@@ -1,9 +1,13 @@
+import sys
+
 import click
 
 @click.command()
-def hello():
+def main():
     """Simple program that greets NAME for a total of COUNT times."""
-    print('hello!!!')
+    commit_msg = [line for line in sys.stdin]
+    print(''.join(commit_msg))
+
 
 if __name__ == '__main__':
-    hello()
+    main()
