@@ -1,11 +1,78 @@
-## Install
+# SECOMlint
+
+Linter to infer compliance against [SECOM](https://tqrg.github.io/secom/) convention. SECOM is a convention for securty commit messages.
+
+## Installation
 
 ```
-pip install .
+pip install secomlint
+python -m spacy download en_core_web_lg
+```
+
+## Usage
+
+```
+secomlint --help
+```
+```
+Usage: secomlint [OPTIONS]
+
+  Linter to check compliance against SECOM (https://tqrg.github.io/secom/).
+
+Options:
+  --no-compliance        Show missing compliance.
+  --is-body-informative  Checks body for security information.
+  --score                Show compliance score.
+  --config TEXT          Rule configuration file path name.
+  --help                 Show this message and exit.
 ```
 
 ## Run tool
 
+`git log -1 --pretty=%B | secomlint` where `git log -1 --pretty=%B` gets the commit message of the local commit.
+
+![](https://raw.githubusercontent.com/TQRG/secomlint/main/assets/secomlint.gif)
+
+* Check only the rules that are not in compliance: `git log -1 --pretty=%B | secomlint --no-compliance`
+* Calculate compliance score: `git log -1 --pretty=%B | secomlint --no-compliance --score`
+
+## Configuration
+
+The linter has a default configuration that can be overridden with a `.yml` file using the following syntax: 
+
 ```
-git log -1 --pretty=%B | secomlint
+rule_name:
+    active: {true | false}
+    type: {0 - warning | 1 - error}
+    value: {string | regex}
+```
+
+An example would be:
+
+```
+header_starts_with_type:
+  active: true
+  type: 0
+  value: 'fix'
+metadata_has_detection:
+  active: false
+```
+The rule `header_starts_with_type` is active, outputs warnings and checks if header starts with type `fix`.
+
+The rule `metadata_has_detection` was deactivated.
+
+```
+git log -1 --pretty=%B | secomlint --config=config.yml
+```
+
+## Check if your body is informative
+
+It is important that the body of security commit messages are somehow informative; secomlint checks your body for security-related keywords.
+
+```
+git log -1 --pretty=%B | secomlint --is-body-informative
+```
+```
+👍 Good to go! Extractor found the following security related words in the message's body:
+   - protocols
 ```
