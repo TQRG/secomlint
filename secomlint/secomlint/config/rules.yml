@@ -1,0 +1,59 @@
+header_max_length:
+  active: true
+  type: 0
+  value: 50
+header_is_not_empty:
+  active: true
+  type: 1
+  value: 0
+header_starts_with_type:
+  active: true
+  type: 1
+  value: 'vuln-fix'
+header_ends_with_vuln_id:
+  active: true
+  type: 0
+body_max_length:
+  active: true
+  type: 0
+  value: 75
+body_is_not_empty:
+  active: true
+  type: 1
+  value: 0
+body_has_three_paragraphs:
+  active: true
+  type: 1
+metadata_has_weakness:
+  active: true
+  type: 1
+metadata_has_severity:
+  active: true
+  type: 1
+metadata_has_detection:
+  active: true
+  type: 1
+metadata_has_report:
+  active: true
+  type: 1
+metadata_has_cvss:
+  active: true
+  type: 1
+metadata_has_introduced_in:
+  active: true
+  type: 1
+contact_has_reported_by:
+  active: true
+  type: 1
+  value: 'reported-by'
+contact_has_signed_off_by:
+  active: true
+  type: 1
+  value: 'signed-off-by'
+contact_has_co_authored_by:
+  active: true
+  type: 1
+  value: 'co-authored-by'
+bugtracker_has_reference:
+  active: true
+  type: 1
