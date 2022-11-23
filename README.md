@@ -38,6 +38,11 @@ Options:
 * Check only the rules that are not in compliance: `git log -1 --pretty=%B | secomlint --no-compliance`
 * Calculate compliance score: `git log -1 --pretty=%B | secomlint --no-compliance --score`
 
+<p align="center">
+  <img width="600" src="assets/secomlint2.svg">
+</p>
+
+
 ## Configuration
 
 The linter has a default configuration that can be overridden with a `.yml` file using the following syntax: 
