@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='secomlint',
-    version='0.1.2',    
+    version='0.1.4',    
     description='A linter for security commit messages',
     url='https://github.com/tqrg/secomlint',
     author='Sofia Reis',
