@@ -4,7 +4,7 @@ from secomlint.parser import Parser
 class Message:
     def __init__(self, lines) -> None:
         self.raw_text = lines
-        self.text = [line.lower() for line in lines]
+        self.text = lines
         self.sections = []
 
     def get_sections(self):

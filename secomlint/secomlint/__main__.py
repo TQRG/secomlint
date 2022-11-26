@@ -1,10 +1,15 @@
 import sys
 import click
+import csv
+
+import pandas as pd
 
 from secomlint.message import Message
 from secomlint.config import Config
 from secomlint.ruler import Ruler
 from secomlint.section import Body
+
+from tqdm import tqdm
 
 
 def compliance_score(ruler, warnings):
@@ -21,7 +26,7 @@ def get_symbol(result, wtype, sep="  "):
         return f"❌{sep}"
     else:
         return f"🟡{sep}"
-
+    
 
 def print_summary(ruler, warnings, alerts, problems, print_score=False):
     color = 'green' if alerts == 0 and problems == 0 else 'yellow'
@@ -65,13 +70,38 @@ def print_body_analysis(message):
 
 @click.command()
 @click.option("--no-compliance", is_flag=True, default=False, help="Show missing compliance.")
+@click.option("--from-file", help="Run linter over a .csv of commit messages.")
+@click.option("--out", help="Output file name.")
 @click.option("--is-body-informative", is_flag=True, default=False, help="Checks body for security information.")
 @click.option("--score", is_flag=True, default=False, help="Show compliance score.")
 @click.option("--config", help="Rule configuration file path name.")
-def main(no_compliance, is_body_informative, score, config):
+def main(no_compliance, from_file, out, is_body_informative, score, config):
     """Linter to check compliance against SECOM (https://tqrg.github.io/secom/)."""
+    
+    if from_file:
+        df = pd.read_csv(from_file, escapechar="\\")
+        ruler = Ruler(Config(path=config))
+        for idx, row in tqdm(df.iterrows()):
+            commit_msg = [line.lower() for line in row['message'].split('\n')]
+            message = Message(commit_msg)
+            message.get_sections()
+            
+            warnings, entities = [], []
+            for section in message.sections:
+                warnings += ruler.compliance(section)
+                entities += section.entities
+            df.at[idx, 'entities'] = str(entities)
+            df.at[idx, 'score_com'] = compliance_score(ruler, warnings)
+            
+        df.to_csv(out,
+                    quoting=csv.QUOTE_NONNUMERIC,
+                    escapechar="\\",
+                    doublequote=False,
+                    index=False)
+        return
+    
     if not sys.stdin.isatty():
-        commit_msg = [line for line in sys.stdin]
+        commit_msg = [line.lower() for line in sys.stdin]
         if commit_msg:
             message = Message(commit_msg)
             message.get_sections()

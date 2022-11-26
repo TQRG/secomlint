@@ -39,4 +39,5 @@ class Ruler:
                 func_rule = getattr(Rule, rule.name)
                 warning = func_rule(rule, section)
                 warnings.append(warning)
+        
         return warnings

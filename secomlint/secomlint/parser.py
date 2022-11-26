@@ -12,11 +12,14 @@ from secomlint.utils import extend_tags
 TAGS_METADATA = ['weakness', 'severity', 'detection',
                  'report', 'cvss', 'introduced in']
 
-TAGS_CONTACT = extend_tags(['reported-by', 'signed-off-by', 'co-authored-by'])
+TAGS_CONTACT = ['reported-by', 'signed-off-by', 'co-authored-by']
+TAGS_CONTACT_NEW = ['reported-by', 'signed-off-by', 'co-authored-by']
+
+TAGS_CONTACT_EXT = extend_tags(TAGS_CONTACT)
 
 TAGS_BUG_TRACKER = extend_tags(['bug-tracker', 'resolves', 'see also'])
 
-ALL_TAGS = TAGS_METADATA + TAGS_CONTACT + TAGS_BUG_TRACKER
+ALL_TAGS = TAGS_METADATA + TAGS_CONTACT_EXT + TAGS_BUG_TRACKER
 
 
 class Parser:
@@ -35,7 +38,7 @@ class Parser:
         """
         section = []
         for idx, line in enumerate(message):
-            if line == '\n':
+            if line == '\n' or line == '':
                 break
             else:
                 section += [line.strip()]
@@ -52,18 +55,18 @@ class Parser:
         return re.search(rf"^({'|'.join(TAGS_METADATA)}):", line)
 
     def is_contact(self, line):
-        return re.search(rf"^({'|'.join(TAGS_CONTACT)}):", line)
+        return re.search(rf"^({'|'.join(TAGS_CONTACT_EXT)}):", line)
 
     def is_bugtracker(self, line):
         return re.search(rf"^({'|'.join(TAGS_BUG_TRACKER)}):", line)
 
-    def collect_sections(self, message, sections=[]):
+    def collect_sections(self, message):
+        sections=[]
         message_tail, idx = message, 0
         ruler = Extractor()
         bugtracker = None
         while message_tail:
             lines, message_tail = self.run(message_tail)
-
             # header (1 first line)
             if len(lines) == 1 and idx == 0:
                 sections.append(
@@ -111,6 +114,34 @@ class Parser:
                             )
             if bugtracker:
                 sections.append(bugtracker)
-
             idx += 1
+
+        metadata_tags = []
+        for section in sections:
+            if type(section) == Metadata:
+                metadata_tags += [section.tag.replace('_', ' ')]
+        
+        for tag in TAGS_METADATA:
+            if tag not in metadata_tags:
+                sections.append(
+                    Metadata(
+                        lines=None,
+                        tag=tag,
+                        entities=None
+                    ))
+                
+        contact_tags = []
+        for section in sections:
+            if type(section) == Contact:
+                contact_tags += [section.tag.replace('_', '-')]
+        
+        for tag in TAGS_CONTACT_NEW:
+            if tag not in contact_tags:
+                sections.append(
+                    Contact(
+                        lines=None,
+                        tag=tag.replace('-', '_'),
+                        entities=None
+                    ))
+
         return sections

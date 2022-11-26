@@ -1,6 +1,10 @@
 # SECOMlint
 
-Linter to infer compliance against [SECOM](https://tqrg.github.io/secom/) convention. SECOM is a convention for securty commit messages.
+Linter to measure compliance against [SECOM](https://tqrg.github.io/secom/) convention. SECOM is a convetion for making security commit messages more readable and structured. Check the [CONFIG.md](https://github.com/TQRG/secom/blob/main/CONFIG.md) file to know how to configure the template in your repository.
+
+<p align="center">
+  <img width="600" src="https://raw.githubusercontent.com/TQRG/secomlint/main/assets/secomlint.svg">
+</p>
 
 ## Installation
 
@@ -31,10 +35,13 @@ Options:
 
 `git log -1 --pretty=%B | secomlint` where `git log -1 --pretty=%B` gets the commit message of the local commit.
 
-![](https://raw.githubusercontent.com/TQRG/secomlint/main/assets/secomlint.gif)
-
 * Check only the rules that are not in compliance: `git log -1 --pretty=%B | secomlint --no-compliance`
 * Calculate compliance score: `git log -1 --pretty=%B | secomlint --no-compliance --score`
+
+<p align="center">
+  <img width="600" src="https://raw.githubusercontent.com/TQRG/secomlint/main/assets/secomlint2.svg">
+</p>
+
 
 ## Configuration
 

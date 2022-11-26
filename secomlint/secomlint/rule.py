@@ -144,7 +144,7 @@ class Rule:
                        f'Metadata section is missing report tag/mention.')
 
     def metadata_has_cvss(self, section):
-        if 'cvss' == section.tag:
+        if 'cvss' == section.tag and section.lines:
             return Warning('metadata_has_cvss', 0, self.wtype,
                            f'Metadata mentions cvss score.')
         return Warning('metadata_has_cvss', 1, self.wtype,
@@ -165,7 +165,7 @@ class Rule:
                        f'Metadata section is missing introduced in tag/mention.')
 
     def contact_has_reported_by(self, section):
-        if 'reported_by' == section.tag:
+        if 'reported_by' == section.tag and section.lines:
             entities = section.entities
             email = [list(entity)[0]
                      for entity in entities if list(entity)[1] == 'EMAIL']
@@ -178,7 +178,7 @@ class Rule:
                        f'Contacts section is missing {self.value} info.')
 
     def contact_has_signed_off_by(self, section):
-        if 'signed_off_by' == section.tag:
+        if 'signed_off_by' == section.tag and section.lines:
             entities = section.entities
             email = [list(entity)[0]
                      for entity in entities if list(entity)[1] == 'EMAIL']
@@ -191,7 +191,7 @@ class Rule:
                        f'Contacts section is missing {self.value} info.')
 
     def contact_has_co_authored_by(self, section):
-        if 'co_authored_by' == section.tag:
+        if 'co_authored_by' == section.tag and section.lines:
             entities = section.entities
             email = [list(entity)[0]
                      for entity in entities if list(entity)[1] == 'EMAIL']
@@ -204,7 +204,7 @@ class Rule:
                        f'Contacts section is missing {self.value} info.')
 
     def bugtracker_has_reference(self, section):
-        if 'reference' == section.tag:
+        if 'reference' == section.tag and section.lines:
             line = ''.join(section.lines)
             if 'bug-tracker' in line:
                 entities = section.entities
