@@ -1,18 +1,19 @@
 - **Guides**
 
-  - [Setup](setup.md)
-  - [Releases](releases.md)
-  - [Changes](changes.md)
+  - [Setup](README.md#installation)
+  <!-- - [Releases](releases.md)
+  - [Changes](changes.md) -->
 
 - **SECOMlint**
 
   - [Usage](usage.md)
+  - [Engine](engine.md)
   - [Rules](secomlint-rules.md)
-  - [Configuration](config.md)
 
 - **Standard**
   - [Convention](convention.md)
   - [Details](fields.md)
+  - [Configuration](template_config.md)
  
 
 
