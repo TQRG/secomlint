@@ -3,6 +3,7 @@ python:
   - "3.10"
   - "3.9"
   - "3.8"
+before_install: cd secomlint
 install:
   - pip install .
   
