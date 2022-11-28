@@ -32,19 +32,19 @@ metadata_has_severity:
   type: 1
 metadata_has_detection:
   active: true
-  type: 1
+  type: 0
 metadata_has_report:
   active: true
-  type: 1
+  type: 0
 metadata_has_cvss:
   active: true
-  type: 1
+  type: 0
 metadata_has_introduced_in:
   active: true
-  type: 1
+  type: 0
 contact_has_reported_by:
   active: true
-  type: 1
+  type: 0
   value: 'reported-by'
 contact_has_signed_off_by:
   active: true
@@ -52,8 +52,8 @@ contact_has_signed_off_by:
   value: 'signed-off-by'
 contact_has_co_authored_by:
   active: true
-  type: 1
+  type: 0
   value: 'co-authored-by'
 bugtracker_has_reference:
   active: true
-  type: 1
+  type: 0
