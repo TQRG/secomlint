@@ -18,6 +18,7 @@ setup(
     package_data={'secomlint': ['entities/patterns.jsonl', 'config/rules.yml']},
     install_requires=[
         'spacy',
+        'pandas',
         'pyyaml'
 ],
     entry_points={
