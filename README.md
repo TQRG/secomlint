@@ -72,17 +72,15 @@ header_starts_with_type:
 metadata_has_detection:
   active: false
 ```
-The rule `header_starts_with_type` is active, outputs warnings and checks if header starts with type `fix`.
-
-The rule `metadata_has_detection` was deactivated.
+(The rule `header_starts_with_type` is active, outputs warnings and checks if header starts with type fix. The rule `metadata_has_detection` was deactivated.)
 
 ```
 git log -1 --pretty=%B | secomlint --config=config.yml
 ```
 
-## Check if your body is informative
+## Check if the message's body is informative enough
 
-It is important that the body of security commit messages are somehow informative; secomlint checks your body for security-related keywords.
+It is important that the body of security commit messages are somehow informative; SECOMlint checks the message's body for security-related keywords.
 
 ```
 git log -1 --pretty=%B | secomlint --is-body-informative
