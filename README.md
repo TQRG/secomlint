@@ -1,6 +1,6 @@
 # SECOMlint
 
-Linter to measure compliance against [SECOM](https://tqrg.github.io/secom/) convention. SECOM is a convetion for making security commit messages more readable and structured. Check the [CONFIG.md](https://github.com/TQRG/secom/blob/main/CONFIG.md) file to know how to configure the template in your repository.
+Linter to measure compliance against [SECOM](https://tqrg.github.io/secom/) convention. SECOM is a convention for making security commit messages more readable and structured. Check the [CONFIG.md](https://github.com/TQRG/secom/blob/main/CONFIG.md) file to know how to configure the template in your repository.
 
 <p align="center">
   <img width="600" src="assets/secomlint.svg">
@@ -10,6 +10,14 @@ Linter to measure compliance against [SECOM](https://tqrg.github.io/secom/) conv
 
 ```
 pip install secomlint
+python -m spacy download en_core_web_lg
+```
+
+From the source code:
+```
+git clone https://github.com/TQRG/secomlint.git
+cd secomlint
+pip install .
 python -m spacy download en_core_web_lg
 ```
 
