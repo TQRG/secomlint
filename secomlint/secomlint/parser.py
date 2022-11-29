@@ -46,9 +46,9 @@ class Parser:
 
     def is_body(self, lines):
         is_body = []
+        regex = rf"^({'|'.join(ALL_TAGS)}).*"
         for line in lines:
-            regex = rf"^(?!{'|'.join(ALL_TAGS)}(:)?.*$).*"
-            is_body += [1] if re.search(regex, line) else [0]
+            is_body += [0] if re.search(regex, line) else [1]
         return len(lines) >= 1 and sum(is_body) > 0
 
     def is_metadata(self, line):
@@ -115,33 +115,5 @@ class Parser:
             if bugtracker:
                 sections.append(bugtracker)
             idx += 1
-
-        metadata_tags = []
-        for section in sections:
-            if type(section) == Metadata:
-                metadata_tags += [section.tag.replace('_', ' ')]
-        
-        for tag in TAGS_METADATA:
-            if tag not in metadata_tags:
-                sections.append(
-                    Metadata(
-                        lines=None,
-                        tag=tag,
-                        entities=None
-                    ))
-                
-        contact_tags = []
-        for section in sections:
-            if type(section) == Contact:
-                contact_tags += [section.tag.replace('_', '-')]
-        
-        for tag in TAGS_CONTACT_NEW:
-            if tag not in contact_tags:
-                sections.append(
-                    Contact(
-                        lines=None,
-                        tag=tag.replace('-', '_'),
-                        entities=None
-                    ))
 
         return sections
