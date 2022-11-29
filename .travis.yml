@@ -2,5 +2,6 @@ language: python
 before_install: cd secomlint
 install:
   - pip install .
+  - python -m spacy download en_core_web_lg
 script:
   - pytest
