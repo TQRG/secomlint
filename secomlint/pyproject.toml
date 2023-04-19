@@ -1,3 +1,58 @@
 [build-system]
 requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
+
+[project.urls]
+repository = "https://github.com/TQRG/secomlint"
+homepage = "https://tqrg.github.io/secomlint/"
+
+[project]
+name="secomlint"
+version="0.1.1"
+description = "A linter and generator for security commit messages."
+authors = [
+    {name = "Sofia Reis", email="sofia.o.reis@tecnico.ulisboa.pt"}
+]
+
+keywords = ["best practice", "message generator", "gpt", "commit message", "security", "secom", "standard", "convention", "compliance", "secomlint"]
+license = {file = "LICENSE"}
+requires-python = ">=3.9"
+
+classifiers = [
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Version Control",
+    "Programming Language :: Python",
+    "Environment :: Console",
+    "Intended Audience :: Developers"
+]
+
+dependencies = [
+    "pandas",
+    "spacy",
+    "pyyaml",
+    "click",
+    "openai"
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+    "coverage",
+    "twine>=1.11.0",
+    "setuptools>=38.6.0",   
+    "wheel>=0.31.0"
+]
+
+
+[tool.setuptools.packages.find]
+exclude = ["docs*", "secomlint.tests*"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+tenet = ["entities/patterns.jsonl", "config/rules.yml"]
+
+[project.scripts]
+secomlint = "secomlint.__main__:main"
