@@ -16,7 +16,7 @@ python -m spacy download en_core_web_lg
 From the source code:
 ```
 git clone https://github.com/TQRG/secomlint.git
-cd secomlint
+cd secomlint/secomlint
 pip install .
 python -m spacy download en_core_web_lg
 ```
