@@ -1,6 +1,7 @@
 import sys
 import click
 import os
+import pandas as pd
 
 from secomlint.message import Message
 from secomlint.config import Config
@@ -13,8 +14,12 @@ from secomlint.section import Header
 
 from tqdm import tqdm
 
-def read_message():
-    raw_message = [line.lower() for line in sys.stdin]
+def read_message(file_path):
+    if file_path:
+        with open(file_path, 'r') as file:
+            raw_message = [line.lower() for line in file]
+    else:
+        raw_message = [line.lower() for line in sys.stdin]
     message = Message(raw_message)
     message.parse()
     return message
@@ -28,13 +33,13 @@ def read_message():
 # @click.option("--body", is_flag=True, default=False, help="Show how informative the message's body is.")
 @click.option("--out", help="Output file name.")
 @click.option("--csv", help="Run linter over a .csv of commit messages.")
+@click.option("--file-path", help="File with commit message to be linted.")
 @click.option("--rules-config", help="Rule configuration file path name.")
 # @click.option("--openai-key", help="Rule configuration file path name.")
-def main(compliance, score, quiet, informativeness, out, csv, rules_config):
+def main(compliance, score, quiet, informativeness, out, csv, file_path, rules_config):
     """Linter to check compliance against SECOM (https://tqrg.github.io/secom/)."""
     
     config = Config()
-    print(config.rules_config_path)
     # if openai_key:
     #     config = Config(openai_key=openai_key)
     #     config.save_key()
@@ -63,7 +68,7 @@ def main(compliance, score, quiet, informativeness, out, csv, rules_config):
             
             # Store the results in the DataFrame
             df.at[idx, 'entities'] = str(entities)
-            df.at[idx, 'score_com'] = compliance_score(ruler, warnings)
+            # df.at[idx, 'score_com'] = compliance_score(ruler, warnings)
         
         # Write the updated DataFrame to a CSV file
         df.to_csv(
@@ -91,23 +96,20 @@ def main(compliance, score, quiet, informativeness, out, csv, rules_config):
     #     else:
     #         click.echo("⚠️  OPENAI key is not configured.\n")
     #         return
-    
     if compliance:
-        if not sys.stdin.isatty(): 
-            message = read_message()
-            if message.sections:
-                compliance = Compliance(path=config.rules_config_path)
-                compliance.check(message)
-                compliance.calculate_score()
-                compliance.report(quiet, score)
+        message = read_message(file_path)
+        if message.sections:
+            compliance = Compliance(config)
+            compliance.check(message)
+            compliance.calculate_score()
+            compliance.report(quiet, score)
         
     if informativeness:
-        if not sys.stdin.isatty(): 
-            message = read_message()
-            if message.sections:
-                informativeness = Informativeness(message)
-                informativeness.check_body()
-                informativeness.report(True, False)
+        message = read_message()
+        if message.sections:
+            informativeness = Informativeness(message)
+            informativeness.check_body()
+            informativeness.report(True, False)
 
     return
 

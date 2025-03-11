@@ -6,7 +6,7 @@ import click
 
 class Compliance:
     def __init__(self, config) -> None:
-        self.ruler = Ruler(Config(path=config))
+        self.ruler = Ruler(Config(path=config.rules_config_path))
         self.results = []
         self.score = 0
         self.warnings = 0

@@ -36,14 +36,15 @@ class Message:
         Parse the message lines into structured sections (header, body,
         metadata, contacts, bugtracker, etc.).
         """
-        # Split the entire text into "paragraphs" or chunks separated by blank lines
         chunks = list(self._split_into_sections(self.text))
-
         # We may store lines for a 'bugtracker' section in progress
         bugtracker_section: Optional[Bugtracker] = None
 
         for i, lines_chunk in enumerate(chunks):
-            # If this is the first chunk and has exactly one line, treat it as a Header
+            # Skip empty chunks
+            if not lines_chunk:
+                continue
+            
             if i == 0 and len(lines_chunk) == 1:
                 self.sections.append(
                     Header(lines=lines_chunk, entities=self.extractor.entities(lines_chunk))
@@ -51,7 +52,7 @@ class Message:
                 continue
 
             # Check if the chunk is recognized as a body
-            if self._is_body_section(lines_chunk):
+            if i == 1 and self._is_body_section(lines_chunk):
                 self.sections.append(
                     Body(lines=lines_chunk, entities=self.extractor.entities(lines_chunk))
                 )
@@ -105,24 +106,53 @@ class Message:
 
     def _split_into_sections(self, lines: List[str]) -> Iterator[List[str]]:
         """
-        Split the message lines into sections (or "chunks") separated by blank lines.
+        Split the message lines into three main sections:
+        1. Header (first line)
+        2. Body (text between header and general data)
+        3. General data (metadata, contact, bugtracker information)
 
         :param lines: The full list of lines for this message.
-        :yield: Lists of lines belonging to each section, stopping at the first blank line.
+        :yield: Lists of lines belonging to each section.
         """
-        section = []
-        for line in lines:
-            if not line.strip():
-                # Yield the current section if we hit a blank line
-                if section:
-                    yield section
-                    section = []
-            else:
-                section.append(line.strip())
+        if not lines:
+            return
 
-        # Yield the last section if there is no trailing blank line
-        if section:
-            yield section
+        # Header is always the first non-empty line
+        header = []
+        body = []
+        general_data = []
+        
+        # Process lines
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+                
+            # If we haven't found the header yet, this is it
+            if not header:
+                header = [line]
+                continue
+                
+            # Check if this line starts with any of the special tags
+            if (METADATA_PATTERN.search(line) or 
+                CONTACT_PATTERN.search(line) or 
+                BUGTRACKER_PATTERN.search(line)):
+                general_data.append(line)
+            else:
+                # If we haven't seen any general data yet, this is body
+                if not general_data:
+                    body.append(line)
+                else:
+                    # Once we've seen general data, everything else goes there
+                    general_data.append(line)
+
+        # Yield sections in order
+        if header:
+            yield header
+        if body:
+            yield body
+        if general_data:
+            yield general_data
 
     def _is_body_section(self, lines_chunk: List[str]) -> bool:
         """
