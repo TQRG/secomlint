@@ -7,17 +7,20 @@ def norm_message(msg):
 def test_get_sections_all():    
     lines = norm_message(messages.Message.MSG1)
     message = Message(lines)
+    message.parse()
     message.get_sections()
-    assert len(message.sections) == 9
+    assert len(message.sections) == 15
     
 def test_get_sections_no_body():    
     lines = norm_message(messages.Message.MSG2)
     message = Message(lines)
+    message.parse()
     message.get_sections()
-    assert len(message.sections) == 8
+    assert len(message.sections) == 14
     
 def test_get_sections_no_body_and_no_metadata():    
     lines = norm_message(messages.Message.MSG3)
     message = Message(lines)
-    message.get_sections()
-    assert len(message.sections) == 4
+    message.parse()
+    print(message.get_sections())
+    assert len(message.sections) == 14

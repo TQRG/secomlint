@@ -44,3 +44,12 @@ Signed-off-by: Daniel Stenberg (daniel@haxx.se)
 
 Resolves: #17940
 See also: #17937"""
+
+    MSG4 = """[PATCH] lldp: fix a buffer overflow when handling management address
+ TLV
+
+When a remote device was advertising a too large management address
+while still respecting TLV boundaries, lldpd would crash due to a buffer
+overflow. However, the buffer being a static one, this buffer overflow
+is not exploitable if hardening was not disabled. This bug exists since
+version 0.5.6."""
