@@ -13,7 +13,7 @@ class Informativeness:
             else:
                 self.entities[type(section).__name__] += section.entities
         self.body = [section for section in message.sections if type(
-            section) == Body][0]
+            section) == Body][0] 
         self.body_secwords = None
         self.prioritization = None
         self.detection = None
