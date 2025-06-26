@@ -48,7 +48,7 @@ def main(compliance, score, quiet, informativeness, out, csv, file_path, rules_c
         message_columns = [col for col in df.columns if '_message' in col]
         # Iterate through rows with a progress bar
         for col in message_columns:
-            for idx, row in tqdm(df.iterrows(), total=len(df), desc="Processing rows"):
+            for idx, row in tqdm(df.iterrows(), total=len(df), desc=f"Processing rows {col}"):
                 
                 # Get the message from the row
                 msg_message = row[col].lower().split("\n")
@@ -82,6 +82,7 @@ def main(compliance, score, quiet, informativeness, out, csv, file_path, rules_c
             compliance.check(message)
             compliance.calculate_score()
             compliance.report(quiet, score)
+        return
 
 if __name__ == '__main__':
     main()
