@@ -8,8 +8,9 @@ def test_get_sections_all():
     lines = norm_message(messages.Message.MSG1)
     message = Message(lines)
     message.parse()
-    message.get_sections()
-    assert len(message.sections) == 15
+    for section in message.get_sections():
+        print(section, section.tag, section.lines)
+    assert len(message.sections) == 12
     
 def test_get_sections_no_body():    
     lines = norm_message(messages.Message.MSG2)

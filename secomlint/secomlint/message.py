@@ -44,7 +44,6 @@ class Message:
             # Skip empty chunks
             if not lines_chunk:
                 continue
-            
             if i == 0 and len(lines_chunk) == 1:
                 self.sections.append(
                     Header(lines=lines_chunk, entities=self.extractor.entities(lines_chunk))
@@ -93,7 +92,6 @@ class Message:
                             entities=self.extractor.entities([line])
                         )
                     continue
-
             # If a bugtracker section was created or appended, finalize it for this chunk
             if bugtracker_section:
                 self.sections.append(bugtracker_section)
@@ -114,8 +112,8 @@ class Message:
         :param lines: The full list of lines for this message.
         :yield: Lists of lines belonging to each section.
         """
-        if not lines:
-            return
+        
+        if not lines: return
 
         # Header is always the first non-empty line
         header = []

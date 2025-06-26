@@ -37,82 +37,51 @@ def read_message(file_path):
 @click.option("--rules-config", help="Rule configuration file path name.")
 # @click.option("--openai-key", help="Rule configuration file path name.")
 def main(compliance, score, quiet, informativeness, out, csv, file_path, rules_config):
-    """Linter to check compliance against SECOM (https://tqrg.github.io/secom/)."""
+    """Linter to check compliance against SECOM (https://security-commits.org/secom/)."""
     
     config = Config()
-    # if openai_key:
-    #     config = Config(openai_key=openai_key)
-    #     config.save_key()
     
-    if csv:
+    if compliance and csv:
         # Read the CSV file
-        df = pd.read_csv(csv, escapechar="\\")
+        df = pd.read_csv(csv)
 
-        # Initialize the ruler with the specified config
-        ruler = Ruler(Config(path=config))
-
+        message_columns = [col for col in df.columns if '_message' in col]
         # Iterate through rows with a progress bar
-        for idx, row in tqdm(df.iterrows(), total=len(df), desc="Processing rows"):
-            # Convert commit message lines to lowercase
-            commit_msg = [line.lower() for line in row['message'].split('\n')]
-            
-            # Construct Message object and parse its sections
-            message = Message(commit_msg)
-            message.get_sections()
-            
-            # Gather warnings and entities from all sections
-            warnings, entities = [], []
-            for section in message.sections:
-                warnings.extend(ruler.compliance(section))
-                entities.extend(section.entities)
-            
-            # Store the results in the DataFrame
-            df.at[idx, 'entities'] = str(entities)
-            # df.at[idx, 'score_com'] = compliance_score(ruler, warnings)
-        
+        for col in message_columns:
+            for idx, row in tqdm(df.iterrows(), total=len(df), desc="Processing rows"):
+                
+                # Get the message from the row
+                msg_message = row[col].lower().split("\n")
+
+                # Initialize compliance checker
+                msg_compliance = Compliance(config)
+                
+                # Parse the message
+                msg_message = Message(msg_message)
+                msg_message.parse()
+                
+                # Check compliance and calculate score
+                msg_compliance.check(msg_message)
+                msg_compliance.calculate_score()
+                df.at[idx, f"{col}_score"] = msg_compliance.score
+                
+                # Get entities
+                entities = []
+                for section in msg_message.sections:
+                    if section.entities:
+                        entities += section.entities
+                df.at[idx, f"{col}_entities"] = str(entities)
+
         # Write the updated DataFrame to a CSV file
-        df.to_csv(
-            out,
-            quoting=csv.QUOTE_NONNUMERIC,
-            escapechar="\\",
-            doublequote=False,
-            index=False
-        )
-        
+        df.to_csv(out, index=False)        
         return
-    
-    # if generation:
-    #     click.echo(click.style("Welcome to SECOMlint!", fg='blue'))
-    #     click.echo("Generating your security commit message...\n")
-    #     config = Config()
-    #     config.read_key()
-        
-    #     if config.openai_key:
-    #         generation = Generation(config.openai_key)
-    #         generation.run()
-    #         generation.print()
-    #         generation.save()
-    #         # generation.usage()
-    #     else:
-    #         click.echo("⚠️  OPENAI key is not configured.\n")
-    #         return
-    if compliance:
+    else:
         message = read_message(file_path)
         if message.sections:
             compliance = Compliance(config)
             compliance.check(message)
             compliance.calculate_score()
             compliance.report(quiet, score)
-        
-    if informativeness:
-        message = read_message()
-        if message.sections:
-            informativeness = Informativeness(message)
-            informativeness.check_body()
-            informativeness.report(True, False)
-
-    return
-
 
 if __name__ == '__main__':
     main()

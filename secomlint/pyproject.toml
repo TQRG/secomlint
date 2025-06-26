@@ -3,8 +3,8 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project.urls]
-repository = "https://github.com/TQRG/secomlint"
-homepage = "https://tqrg.github.io/secomlint/"
+repository = "https://github.com/security-commits/secomlint"
+homepage = "https://security-commits.org/secomlint/"
 
 [project]
 name="secomlint"

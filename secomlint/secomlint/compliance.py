@@ -11,6 +11,7 @@ class Compliance:
         self.score = 0
         self.warnings = 0
         self.errors = 0
+        self.compliant = 0
 
     def check(self, message, section=None):
         sections = [section] if section else message.sections
@@ -29,12 +30,13 @@ class Compliance:
                         self.results = [result] + self.results
                         mid += 1
                         self.errors += 1
-                    if not result.is_compliant and result.type == 0:
+                    elif not result.is_compliant and result.type == 0:
                         self.results = self.results[0:mid] + \
                             [result] + self.results[mid::]
                         self.warnings += 1
-                    if result.is_compliant:
+                    elif result.is_compliant:
                         self.results = self.results + [result]
+                        self.compliant += 1
 
     def calculate_score(self):
         no_rules = len(self.ruler.rules)
@@ -59,7 +61,7 @@ class Compliance:
         summary = f"\nfound {self.errors} error(s), {self.warnings} warning(s);"
 
         if score:
-            secom_link = f"[\u001b]8;;https://tqrg.github.io/secom\u001b\\SECOM\u001b]8;;\u001b\\]"
+            secom_link = f"[\u001b]8;;https://security-commits.org/secom\u001b\\SECOM\u001b]8;;\u001b\\]"
             click.echo(
                 click.style(
                     (f"{summary} 🎯 Commit message is {self.score*100:.2f}% in compliance with {secom_link} convention."),

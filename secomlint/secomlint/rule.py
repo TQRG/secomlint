@@ -7,7 +7,7 @@ class Result:
         self.is_compliant = result
         self.type = wtype
         self.message = wmessage
-        self.link = f"[\u001b]8;;https://tqrg.github.io/secomlint/#/secomlint-rules?id={self.rule_name.replace('_', '-')}\u001b\\{self.rule_name}\u001b]8;;\u001b\\]"
+        self.link = f"[\u001b]8;;https://security-commits.org/secomlint/#/secomlint-rules?id={self.rule_name.replace('_', '-')}\u001b\\{self.rule_name}\u001b]8;;\u001b\\]"
 
 
 class Rule:
